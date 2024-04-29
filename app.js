@@ -107,7 +107,12 @@ app.listen(port, (err) => {
 
 app.get("/tasks", (req, res) => {
     try {
-        res.send(aTasks);
+    if (req.query.completed) {
+        const completed = req.query.completed === 'true';
+        const filteredTasks = aTasks.filter(task => task.completed === completed);
+        return res.send(filteredTasks);
+    }
+    res.send(aTasks);
     } catch (error) {
         res.status(500).json({ message: 'Error while processing the request' + error });
 
